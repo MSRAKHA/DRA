@@ -1,7 +1,7 @@
 import streamlit as st
 from datetime import datetime, timedelta
 import time
-from PIL import Image
+from playsound import playsound  # For playing notification sounds
 
 # Title with colorful text
 st.markdown("<h1 style='color:blue;'>🌟 Daily Reminder App 🌟</h1>", unsafe_allow_html=True)
@@ -28,17 +28,15 @@ st.header("Task Checklist")
 for task in tasks:
     st.checkbox(f"✅ {task['task']} - {task['frequency']}")
 
-# Display a refreshment audio
-st.header("🎵 Refreshment Music")
-audio_file = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-st.audio(audio_file, format="audio/mp3")
-
-# Meditation Timer
+# Meditation Timer with Calm Music
 st.header("🧘 Meditation Timer")
 meditation_duration = st.number_input("Set Meditation Duration (in minutes):", min_value=1, max_value=60, value=10)
+
 if st.button("Start Meditation"):
-    st.write("Meditation started... Stay calm and breathe!")
-    time.sleep(meditation_duration * 60)  # Pause for the meditation duration
+    st.write("Meditation started... Relax and enjoy the calm music.")
+    calm_music_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"  # Calm music
+    st.audio(calm_music_url, format="audio/mp3")
+    time.sleep(meditation_duration * 60)  # Timer for meditation duration
     st.success("Meditation completed! 🎉")
 
 # Study Timer for Exams
@@ -54,14 +52,17 @@ if st.button("Start Study Timer"):
     else:
         st.warning("It's not time to study yet. Check your study schedule.")
 
-# Task Notifications with Sound
+# Task Notifications with Apple iPhone Sound
 st.header("🔔 Task Notifications")
 notification_time = st.time_input("Set a Notification Time", value=datetime.now().time())
+iphone_sound_path = "iphone_notification.mp3"  # Local path to iPhone notification sound
+
 if st.button("Set Notification"):
+    st.write("Notification set. We'll alert you at the specified time!")
     while True:
         if datetime.now().time() >= notification_time:
-            st.balloons()
             st.success("🔔 Reminder: It's time for your next task!")
+            playsound(iphone_sound_path)  # Play iPhone notification sound
             break
         time.sleep(1)
 
